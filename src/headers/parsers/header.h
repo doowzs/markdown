@@ -21,7 +21,8 @@ public:
     auto header = new DOM::Node(
         (enum DOM::Tags)((int)DOM::H1 + match[1].length() - 1),
             map<string, string>{{"id", match[2].str()}});
-    return make_pair(lineParser.parse(header, match[2].str()),match.str().size());
+    lineParser.parse(header, match[2].str());
+    return make_pair(header, match.str().size());
   }
 };
 

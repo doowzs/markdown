@@ -39,7 +39,8 @@ public:
       auto theadCell = new DOM::Node(DOM::TH, map<string, string> {
           {"scope", "col"},
       });
-      theadRow->addChild(lineParser.parse(theadCell, match[1].str()));
+      lineParser.parse(theadCell, match[1].str());
+      theadRow->addChild(theadCell);
       length += match.length();
     }
     thead->addChild(theadRow);
@@ -56,7 +57,8 @@ public:
       for (int i = 0; i < column; ++i) {
         regex_search(text + length, match, colReg);
         auto trowCell = new DOM::Node(DOM::TD);
-        trow->addChild(lineParser.parse(trowCell, match[1].str()));
+        lineParser.parse(trowCell, match[1].str());
+        trow->addChild(trowCell);
         length += match.length();
       }
       if (row == 0) {
