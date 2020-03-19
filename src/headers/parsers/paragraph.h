@@ -12,18 +12,17 @@ private:
   regex reg;
 
 public:
-  ParagraphParser() { reg = regex(".*"); }
+  ParagraphParser() { reg = regex("^.*"); }
   pair<DOM::Node *, size_t> parse(char *text) override {
     cmatch match;
-    if (regex_search(text, match, reg)) {
-      auto *node = new DOM::Node("p", map<string, string>());
-      // TODO: Parse line text
-      auto *content = new DOM::Node(match.str());
-      node->addChild(content);
-      return make_pair(node, match.str().size());
-    } else {
+    if (!regex_search(text, match, reg)) {
       return make_pair(nullptr, 0);
     }
+    auto *node = new DOM::Node("p", map<string, string>());
+    // TODO: Parse line text
+    auto *content = new DOM::Node(match.str());
+    node->addChild(content);
+    return make_pair(node, match.str().size());
   }
 };
 
