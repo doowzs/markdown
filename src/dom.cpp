@@ -12,16 +12,15 @@ const string HTMLHeader = R"(<!DOCTYPE html>
 <head>
     <meta charset="utf-8">
     <title>Markdown HTML</title>
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/github-markdown-css/4.0.0/github-markdown.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/default.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container my-5">)";
+    <div style="margin:5rem 10rem;">)";
 
 const string HTMLFooter = R"(
     </div>
-    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
     <script src="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.js"></script>
     <script src="https://cdn.bootcss.com/KaTeX/0.11.1/contrib/auto-render.min.js"></script>

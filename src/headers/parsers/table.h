@@ -30,7 +30,7 @@ public:
     regex rowReg = regex(string(R"(((.*?)\|){)") + to_string(column) + string(R"(})"));
 
     auto table = new DOM::Node(DOM::TABLE, map<string, string> {
-        {"class", "table table-hover"},
+        {"class", "table"},
     });
     auto thead = new DOM::Node(DOM::THEAD);
     auto theadRow = new DOM::Node(DOM::TR);
