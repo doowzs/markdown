@@ -20,7 +20,7 @@ public:
     if (!regex_search(text, match, reg)) {
       return make_pair(nullptr, 0);
     }
-    return make_pair(new DOM::Node("<hr />"), match.length());
+    return make_pair(new DOM::Node(DOM::HR), match.length());
   }
 };
 
