@@ -7,7 +7,14 @@
 
 namespace DOM {
 
-map<enum Tags, string> TagStrings{
+const string HTMLHeader = R"(
+<!DOCTYPE html>
+<head>
+  <title>MARKDOWN</title>
+</head>
+)";
+
+const map<enum Tags, string> TagStrings{
     {BODY, "body"}, {H1, "h1"},     {H2, "h2"},         {H3, "h3"},
     {H4, "h4"},     {H5, "h5"},     {H6, "h6"},         {UL, "ul"},
     {OL, "ol"},     {LI, "li"},     {PRE, "pre"},       {P, "p"},
@@ -40,7 +47,7 @@ ostream &operator<<(ostream &os, Node &node) {
       os << *child;
     }
   } else {
-    os << "<" << TagStrings[node.tag];
+    os << "<" << TagStrings.at(node.tag);
     for (auto &attr : node.attrs) {
       os << " " << attr.first << "=\"" << attr.second << "\"";
     }
@@ -48,7 +55,7 @@ ostream &operator<<(ostream &os, Node &node) {
     for (auto &child : node.children) {
       os << *child;
     }
-    os << "</" << TagStrings[node.tag] << ">";
+    os << "</" << TagStrings.at(node.tag) << ">";
   }
   return os;
 }

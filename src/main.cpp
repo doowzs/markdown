@@ -1,4 +1,5 @@
 #include "common.h"
+#include "dom.h"
 #include "markdown.h"
 
 int main(int argc, char *argv[]) {
@@ -21,6 +22,6 @@ int main(int argc, char *argv[]) {
 
     Markdown::DocumentParser parser;
     parser.parse(buffer);
-    cout << *parser.root;
+    cout << DOM::HTMLHeader << *parser.root;
   }
 }

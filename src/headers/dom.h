@@ -28,6 +28,9 @@ enum Tags {
   RAW,
 };
 
+extern const string HTMLHeader;
+extern const map<enum Tags, string> TagStrings;
+
 class Node {
 private:
   enum Tags tag;
