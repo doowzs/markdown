@@ -24,6 +24,7 @@ enum Tags {
   P,
   A,
   CODE,
+  SPAN,
   STRONG,
   ITALIC,
   RAW,

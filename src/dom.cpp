@@ -15,6 +15,7 @@ const string HTMLHeader = R"(
   <title>Markdown HTML</title>
   <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/default.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="container my-5">
@@ -24,16 +25,29 @@ const string HTMLFooter = R"(
   </div>
   <script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
+  <script src="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.js"></script>
+  <script src="https://cdn.bootcss.com/KaTeX/0.11.1/contrib/auto-render.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+    renderMathInElement(
+      document.body,
+      {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+        ]
+      }
+    );
+  </script>
 </body>
 </html>)";
 
 const map<enum Tags, string> TagStrings{
-    {BODY, "body"}, {MAIN, "main"}, {H1, "h1"},     {H2, "h2"},
-    {H3, "h3"},     {H4, "h4"},     {H5, "h5"},     {H6, "h6"},
-    {UL, "ul"},     {OL, "ol"},     {LI, "li"},     {PRE, "pre"},
-    {P, "p"},       {A, "a"},       {CODE, "code"}, {STRONG, "strong"},
-    {ITALIC, "i"},  {RAW, "raw"},
+    {BODY, "body"},     {MAIN, "main"}, {H1, "h1"},     {H2, "h2"},
+    {H3, "h3"},         {H4, "h4"},     {H5, "h5"},     {H6, "h6"},
+    {UL, "ul"},         {OL, "ol"},     {LI, "li"},     {PRE, "pre"},
+    {P, "p"},           {A, "a"},       {CODE, "code"}, {SPAN, "span"},
+    {STRONG, "strong"}, {ITALIC, "i"},  {RAW, "raw"},
 };
 
 Node::Node(string content) : content(move(content)) {
