@@ -8,6 +8,7 @@
 #include "parsers/header.h"
 #include "parsers/list.h"
 #include "parsers/paragraph.h"
+#include "parsers/table.h"
 
 LineParser AbstractParser::lineParser = LineParser();
 
@@ -19,6 +20,7 @@ DocumentParser::DocumentParser() {
   parsers.emplace_back(new DividerParser());
   parsers.emplace_back(new ListParser());
   parsers.emplace_back(new CodeParser());
+  parsers.emplace_back(new TableParser());
   parsers.emplace_back(new ParagraphParser());
 }
 
