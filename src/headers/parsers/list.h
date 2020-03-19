@@ -17,7 +17,7 @@ public:
     olReg = regex(R"(^(\s*)(\d+\. )(.*))");
   }
   pair<DOM::Node *, size_t> parseList(char *text, size_t indent, bool ordered) {
-    auto node = new DOM::Node(ordered ? DOM::OL : DOM::UL, map<string, string>());
+    auto node = new DOM::Node(ordered ? DOM::OL : DOM::UL);
     cmatch match;
     size_t length = 0;
     while (true) {
@@ -27,7 +27,7 @@ public:
         if (match[0].length() < indent) {
           break;
         } else if (match[0].length() == indent) {
-          auto child = new DOM::Node(DOM::LI, map<string, string>());
+          auto child = new DOM::Node(DOM::LI);
         }
       }
     }

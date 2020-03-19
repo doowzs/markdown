@@ -18,7 +18,7 @@ public:
     if (!regex_search(text, match, reg)) {
       return make_pair(nullptr, 0);
     }
-    auto *node = new DOM::Node(DOM::P, map<string, string>());
+    auto *node = new DOM::Node(DOM::P);
     // TODO: Parse line text
     auto *content = new DOM::Node(match.str());
     node->addChild(content);
