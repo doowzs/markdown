@@ -9,14 +9,16 @@
 
 class LineParser {
 private:
-  regex strongReg, italicReg, linkReg, codeReg;
+  regex strongItalicReg, strongReg, italicReg, linkReg, codeReg;
 
 public:
   LineParser() {
-    strongReg = regex(R"(^\*\*(.*)\*\*)");
-    italicReg = regex(R"(^\*(.*)\*)");
+    // use non-greedy regex to handle cases like "**A***B*"
+    strongItalicReg = regex(R"(^\*\*\*(.+?)\*\*\*)");
+    strongReg = regex(R"(^\*\*(.+?)\*\*)");
+    italicReg = regex(R"(^\*(.+?)\*)");
     linkReg = regex(R"(^\[(.*)\]\((.*)\))");
-    codeReg = regex(R"(^`(.*)`)");
+    codeReg = regex(R"(^`(.+?)`)");
   }
   DOM::Node *parse(const string &s) {
     cmatch match;
@@ -31,7 +33,14 @@ public:
       }
       node->addChild(new DOM::Node(content));
       string substr = s.substr(pos);
-      if (regex_search(substr.c_str(), match, strongReg)) {
+      if (regex_search(substr.c_str(), match, strongItalicReg)) {
+        auto strong = new DOM::Node(DOM::STRONG);
+        auto italic = new DOM::Node(DOM::ITALIC);
+        italic->addChild(parse(match[1].str()));
+        strong->addChild(italic);
+        node->addChild(strong);
+        pos += match.length();
+      } else if (regex_search(substr.c_str(), match, strongReg)) {
         auto strong = new DOM::Node(DOM::STRONG);
         strong->addChild(parse(match[1].str()));
         node->addChild(strong);
@@ -53,9 +62,7 @@ public:
         code->addChild(new DOM::Node(match[1].str()));
         node->addChild(code);
         pos += match.length();
-      }
-      // all special matches failed...
-      if (s[pos] == '*' or s[pos] == '[' or s[pos] == '`') {
+      } else { // all regex match failed...
         string temp;
         temp += s[pos];
         node->addChild(new DOM::Node(temp));
