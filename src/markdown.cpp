@@ -3,6 +3,7 @@
 //
 
 #include "markdown.h"
+#include "parsers/code.h"
 #include "parsers/divider.h"
 #include "parsers/header.h"
 #include "parsers/list.h"
@@ -17,6 +18,7 @@ DocumentParser::DocumentParser() {
   parsers.emplace_back(new HeaderParser());
   parsers.emplace_back(new DividerParser());
   parsers.emplace_back(new ListParser());
+  parsers.emplace_back(new CodeParser());
   parsers.emplace_back(new ParagraphParser());
 }
 
