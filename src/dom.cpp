@@ -68,6 +68,12 @@ Node::Node(enum Tags tag, map<string, string> attrs)
   children = vector<Node *>();
 }
 
+Node::~Node() {
+  for (auto &c : children) {
+    delete c;
+  }
+}
+
 void Node::addChild(Node *child) { children.emplace_back(child); }
 
 ostream &operator<<(ostream &os, Node &node) {

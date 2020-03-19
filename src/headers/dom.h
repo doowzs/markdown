@@ -52,6 +52,7 @@ public:
   explicit Node(string content);
   explicit Node(enum Tags tag);
   Node(enum Tags tag, map<string, string> attrs);
+  ~Node();
   void addChild(Node *child);
   friend ostream &operator<<(ostream &os, Node &node);
 };

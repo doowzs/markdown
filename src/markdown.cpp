@@ -24,6 +24,13 @@ DocumentParser::DocumentParser() {
   parsers.emplace_back(new ParagraphParser());
 }
 
+DocumentParser::~DocumentParser() {
+  for (auto &p : parsers) {
+    delete p;
+  }
+  delete root;
+}
+
 void DocumentParser::parse(char *text) {
   int pos = 0, len = strlen(text);
   while (pos < len) {

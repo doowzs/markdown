@@ -16,6 +16,7 @@ public:
   vector<AbstractParser *> parsers;
 
   DocumentParser();
+  ~DocumentParser();
   void parse(char *text);
 };
 }
