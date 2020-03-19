@@ -15,9 +15,16 @@ const string HTMLHeader = R"(<!DOCTYPE html>
     <link href="https://cdn.bootcss.com/github-markdown-css/4.0.0/github-markdown.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/default.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet">
+    <style scoped>
+        @media not print {
+            #container {
+                margin: 5rem 10rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div style="margin:5rem 10rem;">)";
+    <div id="container">)";
 
 const string HTMLFooter = R"(
     </div>
@@ -25,16 +32,13 @@ const string HTMLFooter = R"(
     <script src="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.js"></script>
     <script src="https://cdn.bootcss.com/KaTeX/0.11.1/contrib/auto-render.min.js"></script>
     <script>
-      hljs.initHighlightingOnLoad();
-      renderMathInElement(
-        document.body,
-        {
-          delimiters: [
-            { left: "$$", right: "$$", display: true },
-            { left: "$", right: "$", display: false },
-          ]
-        }
-      );
+        hljs.initHighlightingOnLoad();
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+            ]
+        });
     </script>
 </body>
 </html>)";
