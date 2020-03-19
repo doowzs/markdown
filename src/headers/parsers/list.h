@@ -47,10 +47,8 @@ public:
           text += match.length();
           length += match.length();
         } else if (symbol != 0 and match[1].length() == indent + symbol) {
-          auto item = new DOM::Node(DOM::LI);
           auto subList = parseList(text, match[1].length(), ordered);
-          item->addChild(subList.first);
-          list->addChild(item);
+          list->addChild(subList.first);
           text += subList.second;
           length += subList.second;
         } else {
