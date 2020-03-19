@@ -9,7 +9,7 @@
 
 class LineParser {
 private:
-  regex strongItalicReg, strongReg, italicReg, linkReg, codeReg;
+  regex strongItalicReg, strongReg, italicReg, imageReg, linkReg, codeReg;
 
 public:
   LineParser() {
@@ -17,6 +17,7 @@ public:
     strongItalicReg = regex(R"(^\*\*\*(.+?)\*\*\*)");
     strongReg = regex(R"(^\*\*(.+?)\*\*)");
     italicReg = regex(R"(^\*(.+?)\*)");
+    imageReg = regex(R"(^\!\[(.*)\]\((.*)\))");
     linkReg = regex(R"(^\[(.*)\]\((.*)\))");
     codeReg = regex(R"(^`(.+?)`)");
   }
@@ -27,7 +28,7 @@ public:
     while (pos < length) {
       string content;
       while (pos < length) {
-        if (s[pos] == '*' or s[pos] == '[' or s[pos] == '`') break;
+        if (s[pos] == '*' or s[pos] == '!' or s[pos] == '[' or s[pos] == '`') break;
         content += s[pos];
         ++pos;
       }
@@ -52,6 +53,13 @@ public:
           auto italic = new DOM::Node(DOM::ITALIC);
           italic->addChild(parse(match[1].str()));
           node->addChild(italic);
+          pos += match.length();
+        } else if (regex_search(substr.c_str(), match, imageReg)) {
+          auto image = new DOM::Node(DOM::IMG, {
+              {"alt", match[1].str()},
+              {"src", match[2].str()},
+          });
+          node->addChild(image);
           pos += match.length();
         } else if (regex_search(substr.c_str(), match, linkReg)) {
           auto hyperlink = new DOM::Node(DOM::A, {

@@ -23,6 +23,7 @@ enum Tags {
   PRE,
   P,
   A,
+  IMG,
   CODE,
   SPAN,
   STRONG,

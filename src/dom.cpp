@@ -43,11 +43,11 @@ const string HTMLFooter = R"(
 </html>)";
 
 const map<enum Tags, string> TagStrings{
-    {BODY, "body"},     {MAIN, "main"}, {H1, "h1"},     {H2, "h2"},
-    {H3, "h3"},         {H4, "h4"},     {H5, "h5"},     {H6, "h6"},
-    {UL, "ul"},         {OL, "ol"},     {LI, "li"},     {PRE, "pre"},
-    {P, "p"},           {A, "a"},       {CODE, "code"}, {SPAN, "span"},
-    {STRONG, "strong"}, {ITALIC, "i"},  {RAW, "raw"},
+    {BODY, "body"}, {MAIN, "main"},     {H1, "h1"},    {H2, "h2"},
+    {H3, "h3"},     {H4, "h4"},         {H5, "h5"},    {H6, "h6"},
+    {UL, "ul"},     {OL, "ol"},         {LI, "li"},    {PRE, "pre"},
+    {P, "p"},       {A, "a"},           {IMG, "img"},  {CODE, "code"},
+    {SPAN, "span"}, {STRONG, "strong"}, {ITALIC, "i"}, {RAW, "raw"},
 };
 
 Node::Node(string content) : content(move(content)) {
