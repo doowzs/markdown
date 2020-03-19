@@ -98,11 +98,8 @@ ostream &operator<<(ostream &os, Node &node) {
   if (node.tag == RAW) {
     os << endl;
     for (int i = 0; i < node.indent; ++i) os << "    ";
-    if (node.content.empty()) {
-      os << "<!--EMPTY-->";
-    } else {
-      os << node.content;
-    }
+    assert(!node.content.empty());
+    os << node.content;
     for (auto &child : node.children) {
       child->indent = node.indent + (node.empty() ? 0 : 1);
       os << *child;
