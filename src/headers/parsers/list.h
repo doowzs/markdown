@@ -29,10 +29,8 @@ public:
       if (!regex_search(text, match, ordered ? olReg : ulReg)) {
         if (regex_search(text, match, ordered ? ulReg : olReg) and
             (symbol != 0 and match[1].length() == indent + symbol)) {
-          auto item = new DOM::Node(DOM::LI);
           auto subList = parseList(text, match[1].length(), not ordered);
-          item->addChild(subList.first);
-          list->addChild(item);
+          list->addChild(subList.first);
           text += subList.second;
           length += subList.second;
         } else {
