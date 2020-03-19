@@ -10,12 +10,13 @@
 namespace DOM {
 enum Tags {
   BODY,
-  H1 = 1,
-  H2 = 2,
-  H3 = 3,
-  H4 = 4,
-  H5 = 5,
-  H6 = 6,
+  MAIN,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
   UL,
   OL,
   LI,
@@ -29,6 +30,7 @@ enum Tags {
 };
 
 extern const string HTMLHeader;
+extern const string HTMLFooter;
 extern const map<enum Tags, string> TagStrings;
 
 class Node {

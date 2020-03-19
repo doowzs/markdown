@@ -9,17 +9,28 @@ namespace DOM {
 
 const string HTMLHeader = R"(
 <!DOCTYPE html>
+<html>
 <head>
-  <title>MARKDOWN</title>
+  <meta charset="utf-8">
+  <title>Markdown HTML</title>
+  <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<body>
+  <div class="container my-5">
 )";
 
+const string HTMLFooter = R"(
+  </div>
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>)";
+
 const map<enum Tags, string> TagStrings{
-    {BODY, "body"}, {H1, "h1"},     {H2, "h2"},         {H3, "h3"},
-    {H4, "h4"},     {H5, "h5"},     {H6, "h6"},         {UL, "ul"},
-    {OL, "ol"},     {LI, "li"},     {PRE, "pre"},       {P, "p"},
-    {A, "a"},       {CODE, "code"}, {STRONG, "strong"}, {ITALIC, "i"},
-    {RAW, "raw"},
+    {BODY, "body"}, {MAIN, "main"}, {H1, "h1"},     {H2, "h2"},
+    {H3, "h3"},     {H4, "h4"},     {H5, "h5"},     {H6, "h6"},
+    {UL, "ul"},     {OL, "ol"},     {LI, "li"},     {PRE, "pre"},
+    {P, "p"},       {A, "a"},       {CODE, "code"}, {STRONG, "strong"},
+    {ITALIC, "i"},  {RAW, "raw"},
 };
 
 Node::Node(string content) : content(move(content)) {

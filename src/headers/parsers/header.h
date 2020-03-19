@@ -18,8 +18,9 @@ public:
     if (!regex_search(text, match, reg)) {
       return make_pair(nullptr, 0);
     }
-    auto *node = new DOM::Node((enum DOM::Tags)match[1].str().length(),
-                               map<string, string>{{"id", match[2].str()}});
+    auto *node = new DOM::Node(
+        (enum DOM::Tags)((int)DOM::H1 + match[1].str().length() - 1),
+        map<string, string>{{"id", match[2].str()}});
     node->addChild(lineParser.parse(match[2].str()));
     return make_pair(node, match.str().size());
   }

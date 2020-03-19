@@ -12,7 +12,7 @@ LineParser AbstractParser::lineParser = LineParser();
 namespace Markdown {
 
 DocumentParser::DocumentParser() {
-  root = new DOM::Node(DOM::BODY);
+  root = new DOM::Node(DOM::MAIN);
   parsers.emplace_back(new HeaderParser());
   parsers.emplace_back(new ListParser());
   parsers.emplace_back(new ParagraphParser());

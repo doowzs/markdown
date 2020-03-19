@@ -19,9 +19,17 @@ int main(int argc, char *argv[]) {
     buffer = new char[length];
     fs.seekg(0, ios::beg);
     fs.read(buffer, length);
+    fs.close();
 
     Markdown::DocumentParser parser;
     parser.parse(buffer);
-    cout << DOM::HTMLHeader << *parser.root;
+
+    fs.open("output.html", ios::out | ios::trunc);
+    if (!fs.is_open()) {
+      cerr << "Error: cannot open file output.html for writing." << endl;
+      return -2;
+    }
+    fs << DOM::HTMLHeader << *parser.root << DOM::HTMLFooter;
+    fs.close();
   }
 }
