@@ -20,9 +20,7 @@ public:
     }
     auto *node = new DOM::Node((enum DOM::Tags)match[1].str().length(),
                                map<string, string>{{"id", match[2].str()}});
-    // TODO: parse line text
-    auto *content = new DOM::Node(match[2].str());
-    node->addChild(content);
+    node->addChild(lineParser.parse(match[2].str()));
     return make_pair(node, match.str().size());
   }
 };

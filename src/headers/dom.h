@@ -24,6 +24,7 @@ enum Tags {
   A,
   CODE,
   STRONG,
+  ITALIC,
   RAW,
 };
 

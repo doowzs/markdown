@@ -7,9 +7,11 @@
 
 #include "common.h"
 #include "dom.h"
+#include "parsers/line.h"
 
 class AbstractParser {
 public:
+  static LineParser lineParser;
   virtual pair<DOM::Node *, size_t> parse(char *text) {
     return make_pair(nullptr, 0);
   }

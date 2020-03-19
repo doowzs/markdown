@@ -7,6 +7,8 @@
 #include "parsers/list.h"
 #include "parsers/paragraph.h"
 
+LineParser AbstractParser::lineParser = LineParser();
+
 namespace Markdown {
 
 DocumentParser::DocumentParser() {

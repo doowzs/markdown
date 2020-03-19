@@ -41,8 +41,7 @@ public:
       } else {
         if (match[1].length() == indent) {
           auto item = new DOM::Node(DOM::LI);
-          auto content = new DOM::Node(match[3].str());
-          item->addChild(content);
+          item->addChild(lineParser.parse(match[3].str()));
           list->addChild(item);
           symbol = match[2].length();
           text += match.length();
