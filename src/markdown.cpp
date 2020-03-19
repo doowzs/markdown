@@ -3,6 +3,7 @@
 //
 
 #include "markdown.h"
+#include "parsers/divider.h"
 #include "parsers/header.h"
 #include "parsers/list.h"
 #include "parsers/paragraph.h"
@@ -14,6 +15,7 @@ namespace Markdown {
 DocumentParser::DocumentParser() {
   root = new DOM::Node(DOM::MAIN);
   parsers.emplace_back(new HeaderParser());
+  parsers.emplace_back(new DividerParser());
   parsers.emplace_back(new ListParser());
   parsers.emplace_back(new ParagraphParser());
 }
