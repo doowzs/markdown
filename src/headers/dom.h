@@ -26,6 +26,7 @@ enum Tags {
   STRONG,
   RAW,
 };
+
 class Node {
 private:
   enum Tags tag;

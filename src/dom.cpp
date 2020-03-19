@@ -7,6 +7,13 @@
 
 namespace DOM {
 
+map<enum Tags, string> TagStrings{
+    {BODY, "body"}, {H1, "h1"},     {H2, "h2"},         {H3, "h3"},
+    {H4, "h4"},     {H5, "h5"},     {H6, "h6"},         {UL, "ul"},
+    {OL, "ol"},     {LI, "li"},     {PRE, "pre"},       {P, "p"},
+    {A, "a"},       {CODE, "code"}, {STRONG, "strong"}, {RAW, "raw"},
+};
+
 Node::Node(string content) : content(move(content)) {
   tag = RAW;
   attrs = map<string, string>();
@@ -32,7 +39,7 @@ ostream &operator<<(ostream &os, Node &node) {
       os << *child;
     }
   } else {
-    os << "<" << node.tag;
+    os << "<" << TagStrings[node.tag];
     for (auto &attr : node.attrs) {
       os << " " << attr.first << "=\"" << attr.second << "\"";
     }
@@ -40,7 +47,7 @@ ostream &operator<<(ostream &os, Node &node) {
     for (auto &child : node.children) {
       os << *child;
     }
-    os << "</" << node.tag << ">";
+    os << "</" << TagStrings[node.tag] << ">";
   }
   return os;
 }
