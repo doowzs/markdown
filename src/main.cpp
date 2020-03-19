@@ -1,6 +1,5 @@
-#include <fstream>
-#include <iostream>
-using namespace std;
+#include "common.h"
+#include "markdown.h"
 
 int main(int argc, char *argv[]) {
   if (argc != 2) {
@@ -19,6 +18,9 @@ int main(int argc, char *argv[]) {
     buffer = new char[length];
     fs.seekg(0, ios::beg);
     fs.read(buffer, length);
-    cout << buffer << endl;
+
+    Markdown::DocumentParser parser;
+    parser.parse(buffer);
+    cout << *parser.root;
   }
 }

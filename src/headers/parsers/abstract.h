@@ -5,12 +5,12 @@
 #ifndef MARKDOWN_SRC_HEADERS_ABSTRACT_PARSER_H_
 #define MARKDOWN_SRC_HEADERS_ABSTRACT_PARSER_H_
 
-class DomNode;
+#include "dom.h"
 
 class AbstractParser {
 public:
-  virtual DomNode *parse(char *text) {
-    return nullptr;
+  virtual pair<DOM::Node *, size_t> parse(char *text) {
+    return make_pair(nullptr, 0);
   }
 };
 

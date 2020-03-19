@@ -12,4 +12,24 @@ DocumentParser::DocumentParser() {
   parsers.emplace_back(new ParagraphParser());
 }
 
+void DocumentParser::parse(char *text) {
+  int pos = 0, len = strlen(text);
+  while (pos < len) {
+    int last = pos;
+    cerr << "Parsed at " << last << "." << endl;
+    for (auto &p : parsers) {
+      auto res = p->parse(text + pos);
+      if (res.first != nullptr) {
+        root->addChild(res.first);
+        pos += res.second;
+        break;
+      }
+    }
+    if (pos == last) {
+      cerr << "Parsing failed." << endl;
+      break;
+    }
+  }
+}
+
 }
