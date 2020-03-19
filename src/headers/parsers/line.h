@@ -13,7 +13,7 @@ private:
 
 public:
   LineParser() {
-    strongReg = regex(R"(\*\*(.*)\*\*)");
+    strongReg = regex(R"(\*\*(.*)(\*\*)?)"); // <- non greedy regex
     italicReg = regex(R"(\*(.*)\*)");
     linkReg = regex(R"(\[(.*)\]\((.*)\))");
   }
