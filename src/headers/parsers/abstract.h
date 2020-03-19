@@ -5,6 +5,7 @@
 #ifndef MARKDOWN_SRC_HEADERS_ABSTRACT_PARSER_H_
 #define MARKDOWN_SRC_HEADERS_ABSTRACT_PARSER_H_
 
+#include <regex>
 #include "dom.h"
 
 class AbstractParser {

@@ -5,7 +5,6 @@
 #ifndef MARKDOWN_SRC_HEADERS_PARSERS_PARAGRAPH_H_
 #define MARKDOWN_SRC_HEADERS_PARSERS_PARAGRAPH_H_
 
-#include "regex.h"
 #include "parsers/abstract.h"
 
 class ParagraphParser : public AbstractParser {
@@ -13,7 +12,7 @@ private:
   regex reg;
 public:
   ParagraphParser() {
-    reg = regex(".*$");
+    reg = regex(".*");
   }
   pair<DOM::Node *, size_t> parse(char *text) override {
     cmatch match;
