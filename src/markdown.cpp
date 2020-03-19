@@ -4,6 +4,7 @@
 
 #include "markdown.h"
 #include "parsers/header.h"
+#include "parsers/list.h"
 #include "parsers/paragraph.h"
 
 namespace Markdown {
@@ -11,14 +12,17 @@ namespace Markdown {
 DocumentParser::DocumentParser() {
   root = new DOM::Node(DOM::BODY, map<string, string>());
   parsers.emplace_back(new HeaderParser());
+  parsers.emplace_back(new ListParser());
   parsers.emplace_back(new ParagraphParser());
 }
 
 void DocumentParser::parse(char *text) {
   int pos = 0, len = strlen(text);
   while (pos < len) {
-    while (pos < len and isspace(text[pos])) ++pos;
-    if (pos == len) break;
+    while (pos < len and isspace(text[pos]))
+      ++pos;
+    if (pos == len)
+      break;
     int last = pos;
     cerr << "Parsed at " << last << "." << endl;
     for (auto &p : parsers) {

@@ -12,7 +12,7 @@ private:
   regex reg;
 
 public:
-  ParagraphParser() { reg = regex("^.*"); }
+  ParagraphParser() { reg = regex(R"(^.*)"); }
   pair<DOM::Node *, size_t> parse(char *text) override {
     cmatch match;
     if (!regex_search(text, match, reg)) {

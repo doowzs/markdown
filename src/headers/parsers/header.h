@@ -12,7 +12,7 @@ private:
   regex reg;
 
 public:
-  HeaderParser() { reg = std::regex("^\\s*(#{1,6}) (.*)"); }
+  HeaderParser() { reg = std::regex(R"(^\s*(#{1,6}) (.*))"); }
   pair<DOM::Node *, size_t> parse(char *text) override {
     cmatch match;
     if (!regex_search(text, match, reg)) {

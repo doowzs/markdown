@@ -13,11 +13,11 @@ private:
 
 public:
   ListParser() {
-    ulReg = regex("^(\\s*)(\\+|-|\\* )(.*)");
-    olReg = regex("^(\\s*)(\\d+\\. )(.*)");
+    ulReg = regex(R"(^(\s*)(\+|-|\* )(.*))");
+    olReg = regex(R"(^(\s*)(\d+\. )(.*))");
   }
   pair<DOM::Node *, size_t> parseList(char *text, size_t indent, bool ordered) {
-    auto node = new DOM::Node(ordered ? "ol" : "ul", map<string, string>());
+    auto node = new DOM::Node(ordered ? DOM::OL : DOM::UL, map<string, string>());
     cmatch match;
     size_t length = 0;
     while (true) {
