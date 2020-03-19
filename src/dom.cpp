@@ -69,6 +69,11 @@ Node::Node(enum Tags tag, map<string, string> attrs)
   children = vector<Node *>();
 }
 
+Node::Node(enum Tags tag, map<string, string> attrs, string content)
+    : tag(tag), attrs(move(attrs)), content(move(content)) {
+  children = vector<Node *>();
+}
+
 Node::~Node() {
   for (auto &c : children) {
     delete c;
@@ -80,6 +85,8 @@ bool Node::empty() const {
 }
 
 Node *Node::addChild(Node *child) {
+  // non-leave nodes shall not have content
+  assert(content.empty());
   children.emplace_back(child);
   return this;
 }
@@ -107,14 +114,18 @@ ostream &operator<<(ostream &os, Node &node) {
       os << " " << attr.first << "=\"" << attr.second << "\"";
     }
     os << ">";
-    /* Recursively print all children */
-    for (auto &child : node.children) {
-      child->indent = node.indent + 1;
-      os << *child;
-    }
-    /* Close-tag of current DOM Node */
+    if (node.content.empty()) {
+      /* Recursively print all children */
+      for (auto &child : node.children) {
+        child->indent = node.indent + 1;
+        os << *child;
+      }
       os << endl;
       for (int i = 0; i < node.indent; ++i) os << "    ";
+    } else {
+      os << node.content;
+    }
+    /* Close-tag of current DOM Node */
     os << "</" << TagStrings.at(node.tag) << ">";
   }
   return os;

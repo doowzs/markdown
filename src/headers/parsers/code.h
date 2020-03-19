@@ -12,14 +12,13 @@ private:
   regex reg;
 
 public:
-  CodeParser() { reg = regex(R"(^```(.*)\n)"); }
+  CodeParser() { reg = regex(R"(^```(.*)\n?)"); }
   pair<DOM::Node *, size_t> parse(char *text) override {
     cmatch match;
     if (!regex_search(text, match, reg)) {
       return make_pair(nullptr, 0);
     }
     auto *node = new DOM::Node(DOM::PRE, map<string, string>{{"lang", match[1].str()}});
-    auto *hljs = new DOM::Node(DOM::CODE, map<string, string>{{"class", match[1].str()}});
     int length = match.length();
     string code;
     while (text[length] != '\0') {
@@ -29,7 +28,7 @@ public:
       code += text[length];
       ++length;
     }
-    hljs->addChild(new DOM::Node(code));
+    auto *hljs = new DOM::Node(DOM::CODE, map<string, string>{{"class", match[1].str()}}, code);
     node->addChild(hljs);
     return make_pair(node, length + 3);
   }

@@ -53,8 +53,9 @@ public:
   explicit Node(string content);
   explicit Node(enum Tags tag);
   Node(enum Tags tag, map<string, string> attrs);
+  Node(enum Tags tag, map<string, string> attrs, string content);
   ~Node();
-  bool empty() const;
+  [[nodiscard]] bool empty() const;
   Node *addChild(Node *child);
   friend ostream &operator<<(ostream &os, Node &node);
 };
