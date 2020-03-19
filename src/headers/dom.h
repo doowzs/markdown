@@ -43,6 +43,7 @@ extern const map<enum Tags, string> TagStrings;
 
 class Node {
 private:
+  int indent{};
   enum Tags tag;
   string content;
   map<string, string> attrs;
@@ -53,7 +54,8 @@ public:
   explicit Node(enum Tags tag);
   Node(enum Tags tag, map<string, string> attrs);
   ~Node();
-  void addChild(Node *child);
+  bool empty() const;
+  Node *addChild(Node *child);
   friend ostream &operator<<(ostream &os, Node &node);
 };
 } // namespace DOM

@@ -7,38 +7,36 @@
 
 namespace DOM {
 
-const string HTMLHeader = R"(
-<!DOCTYPE html>
+const string HTMLHeader = R"(<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Markdown HTML</title>
-  <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/default.min.css" rel="stylesheet">
-  <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Markdown HTML</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/default.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container my-5">
-)";
+    <div class="container my-5">)";
 
 const string HTMLFooter = R"(
-  </div>
-  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
-  <script src="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.js"></script>
-  <script src="https://cdn.bootcss.com/KaTeX/0.11.1/contrib/auto-render.min.js"></script>
-  <script>
-    hljs.initHighlightingOnLoad();
-    renderMathInElement(
-      document.body,
-      {
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "$", right: "$", display: false },
-        ]
-      }
-    );
-  </script>
+    </div>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
+    <script src="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.js"></script>
+    <script src="https://cdn.bootcss.com/KaTeX/0.11.1/contrib/auto-render.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+      renderMathInElement(
+        document.body,
+        {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+          ]
+        }
+      );
+    </script>
 </body>
 </html>)";
 
@@ -59,6 +57,9 @@ Node::Node(string content) : content(move(content)) {
 }
 
 Node::Node(enum Tags tag) : tag(tag) {
+  if (tag == MAIN) {
+    indent = 2; // <body><div><main>...
+  }
   attrs = map<string, string>();
   children = vector<Node *>();
 }
@@ -74,23 +75,46 @@ Node::~Node() {
   }
 }
 
-void Node::addChild(Node *child) { children.emplace_back(child); }
+bool Node::empty() const {
+  return tag == RAW and content.empty();
+}
+
+Node *Node::addChild(Node *child) {
+  children.emplace_back(child);
+  return this;
+}
 
 ostream &operator<<(ostream &os, Node &node) {
   if (node.tag == RAW) {
-    os << node.content;
+    os << endl;
+    for (int i = 0; i < node.indent; ++i) os << "    ";
+    if (node.content.empty()) {
+      os << "<!--EMPTY-->";
+    } else {
+      os << node.content;
+    }
     for (auto &child : node.children) {
+      child->indent = node.indent + (node.empty() ? 0 : 1);
       os << *child;
     }
   } else {
+    /* Indent of current DOM node */
+    os << endl;
+    for (int i = 0; i < node.indent; ++i) os << "    ";
+    /* Tag of current DOM node */
     os << "<" << TagStrings.at(node.tag);
     for (auto &attr : node.attrs) {
       os << " " << attr.first << "=\"" << attr.second << "\"";
     }
     os << ">";
+    /* Recursively print all children */
     for (auto &child : node.children) {
+      child->indent = node.indent + 1;
       os << *child;
     }
+    /* Close-tag of current DOM Node */
+      os << endl;
+      for (int i = 0; i < node.indent; ++i) os << "    ";
     os << "</" << TagStrings.at(node.tag) << ">";
   }
   return os;
