@@ -18,7 +18,8 @@ public:
     if (!regex_search(text, match, reg)) {
       return make_pair(nullptr, 0);
     }
-    auto *node = new DOM::Node(DOM::PRE, map<string, string>{{"lang", match[1].str()}});
+    string lang = match[1].str().empty() ? "plaintext" : match[1].str();
+    auto *node = new DOM::Node(DOM::PRE, map<string, string>{{"lang", lang}});
     int length = match.length();
     string code;
     while (text[length] != '\0') {
@@ -28,7 +29,7 @@ public:
       code += text[length];
       ++length;
     }
-    auto *hljs = new DOM::Node(DOM::CODE, map<string, string>{{"class", match[1].str()}}, code);
+    auto *hljs = new DOM::Node(DOM::CODE, map<string, string>{{"class", lang}}, code);
     node->addChild(hljs);
     return make_pair(node, length + 3);
   }
