@@ -9,11 +9,12 @@
 
 class LineParser {
 private:
-  regex strongItalicReg, strongReg, italicReg, imageReg, linkReg, codeReg;
+  regex headerReg, strongItalicReg, strongReg, italicReg, imageReg, linkReg, codeReg;
 
 public:
   LineParser() {
     // use non-greedy regex to handle cases like "**A***B*"
+    headerReg = regex(R"((#{1,6})\s?(.*))");
     strongItalicReg = regex(R"(^\*\*\*(.+?)\*\*\*)");
     strongReg = regex(R"(^\*\*(.+?)\*\*)");
     italicReg = regex(R"(^\*(.+?)\*)");
@@ -28,7 +29,8 @@ public:
     while (pos < length) {
       string content;
       while (pos < length) {
-        if (s[pos] == '*' or s[pos] == '!' or s[pos] == '[' or s[pos] == '`') break;
+        if (s[pos] == '#' or s[pos] == '*' or s[pos] == '!' or
+            s[pos] == '[' or s[pos] == '`') break;
         content += s[pos];
         ++pos;
       }
@@ -37,7 +39,12 @@ public:
         break;
       } else {
         string substr = s.substr(pos);
-        if (regex_search(substr.c_str(), match, strongItalicReg)) {
+        if (regex_search(substr.c_str(), match, headerReg)) {
+          auto header = new DOM::Node((enum DOM::Tags)((int)DOM::H1 + match[1].length() - 1));
+          header->addChild(parse(match[2].str()));
+          node->addChild(header);
+          pos += match.length();
+        } else if (regex_search(substr.c_str(), match, strongItalicReg)) {
           auto strong = new DOM::Node(DOM::STRONG);
           auto italic = new DOM::Node(DOM::ITALIC);
           italic->addChild(parse(match[1].str()));
