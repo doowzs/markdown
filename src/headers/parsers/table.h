@@ -16,7 +16,7 @@ public:
     reg = regex(R"(\|(.*)\|)"); // greedy regex
   }
   pair<DOM::Node *, size_t> parseTable(char *text) {
-    int column = 0;
+    int row = 0, column = 0;
     size_t length = 1;
     cmatch match;
 
@@ -36,7 +36,9 @@ public:
     auto theadRow = new DOM::Node(DOM::TR);
     for (int i = 0; i < column; ++i) {
       regex_search(text + length, match, colReg);
-      auto theadCell = new DOM::Node(DOM::TH);
+      auto theadCell = new DOM::Node(DOM::TH, map<string, string> {
+          {"scope", "col"},
+      });
       theadCell->addChild(lineParser.parse(match[1].str()));
       theadRow->addChild(theadCell);
       length += match.length();
@@ -59,8 +61,14 @@ public:
         trow->addChild(trowCell);
         length += match.length();
       }
-      tbody->addChild(trow);
+      if (row == 0) {
+        delete trow; // ignore the alignment row
+      } else {
+        tbody->addChild(trow);
+      }
+      ++row;
     }
+    --row;
     table->addChild(tbody);
 
     return make_pair(table, length);
