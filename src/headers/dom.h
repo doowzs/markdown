@@ -60,7 +60,7 @@ private:
   vector<Node *> children;
 
 public:
-  explicit Node(string content);
+  explicit Node(const string& content);
   explicit Node(enum Tags tag);
   Node(enum Tags tag, map<string, string> attrs);
   Node(enum Tags tag, map<string, string> attrs, string content);

@@ -53,7 +53,10 @@ const map<enum Tags, string> TagStrings{
     {ITALIC, "i"},    {RAW, "raw"},
 };
 
-Node::Node(string content) : content(move(content)) {
+Node::Node(const string& content) {
+  for (auto &c : content) {
+    this->content += escape(c);
+  }
   tag = RAW;
   attrs = map<string, string>();
   children = vector<Node *>();
