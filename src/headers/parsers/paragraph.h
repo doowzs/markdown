@@ -10,10 +10,9 @@
 class ParagraphParser : public AbstractParser {
 private:
   regex reg;
+
 public:
-  ParagraphParser() {
-    reg = regex(".*");
-  }
+  ParagraphParser() { reg = regex(".*"); }
   pair<DOM::Node *, size_t> parse(char *text) override {
     cmatch match;
     if (regex_search(text, match, reg)) {
