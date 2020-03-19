@@ -19,7 +19,7 @@ public:
       return make_pair(nullptr, 0);
     }
     auto *node = new DOM::Node(DOM::P);
-    node->addChild(lineParser.parse(match.str()));
+    lineParser.parse(node, match.str());
     return make_pair(node, match.str().size());
   }
 };

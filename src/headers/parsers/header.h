@@ -12,13 +12,16 @@ private:
   regex reg;
 
 public:
-  HeaderParser() { reg = std::regex(R"(^\s*(#{1,6}.*))"); }
+  HeaderParser() { reg = std::regex(R"(^\s*(#{1,6})(.*))"); }
   pair<DOM::Node *, size_t> parse(char *text) override {
     cmatch match;
     if (!regex_search(text, match, reg)) {
       return make_pair(nullptr, 0);
     }
-    return make_pair(lineParser.parse(match[1].str()), match.str().size());
+    auto header = new DOM::Node(
+        (enum DOM::Tags)((int)DOM::H1 + match[1].length() - 1),
+            map<string, string>{{"id", match[2].str()}});
+    return make_pair(lineParser.parse(header, match[2].str()),match.str().size());
   }
 };
 

@@ -22,10 +22,9 @@ public:
     linkReg = regex(R"(^\[(.*)\]\((.*)\))");
     codeReg = regex(R"(^`(.+?)`)");
   }
-  DOM::Node *parse(const string &s) {
+  DOM::Node *parse(DOM::Node *node, const string &s) {
     cmatch match;
     size_t pos = 0, length = s.length();
-    auto *node = new DOM::Node(string());
     while (pos < length) {
       string content;
       while (pos < length) {
@@ -34,32 +33,27 @@ public:
         content += DOM::escape(s[pos]);
         ++pos;
       }
-      node->addChild(new DOM::Node(content));
+      if (!content.empty()) node->addChild(new DOM::Node(content));
       if (pos >= length) {
         break;
       } else {
         string substr = s.substr(pos);
         if (regex_search(substr.c_str(), match, headerReg)) {
           auto header = new DOM::Node((enum DOM::Tags)((int)DOM::H1 + match[1].length() - 1));
-          header->addChild(parse(match[2].str()));
-          node->addChild(header);
+          node->addChild(parse(header, match[2].str()));
           pos += match.length();
         } else if (regex_search(substr.c_str(), match, strongItalicReg)) {
           auto strong = new DOM::Node(DOM::STRONG);
           auto italic = new DOM::Node(DOM::ITALIC);
-          italic->addChild(parse(match[1].str()));
-          strong->addChild(italic);
-          node->addChild(strong);
+          node->addChild(strong->addChild(parse(italic, match[1].str())));
           pos += match.length();
         } else if (regex_search(substr.c_str(), match, strongReg)) {
           auto strong = new DOM::Node(DOM::STRONG);
-          strong->addChild(parse(match[1].str()));
-          node->addChild(strong);
+          node->addChild(parse(strong, match[1].str()));
           pos += match.length();
         } else if (regex_search(substr.c_str(), match, italicReg)) {
           auto italic = new DOM::Node(DOM::ITALIC);
-          italic->addChild(parse(match[1].str()));
-          node->addChild(italic);
+          node->addChild(parse(italic, match[1].str()));
           pos += match.length();
         } else if (regex_search(substr.c_str(), match, imageReg)) {
           auto image = new DOM::Node(DOM::IMG, {
@@ -72,13 +66,11 @@ public:
           auto hyperlink = new DOM::Node(DOM::A, {
               {"href", match[2].str()},
           });
-          hyperlink->addChild(parse(match[1].str()));
-          node->addChild(hyperlink);
+          node->addChild(parse(hyperlink, match[1].str()));
           pos += match.length();
         } else if (regex_search(substr.c_str(), match, codeReg)) {
           auto code = new DOM::Node(DOM::CODE);
-          code->addChild(new DOM::Node(match[1].str()));
-          node->addChild(code);
+          node->addChild(code->addChild(new DOM::Node(match[1].str())));
           pos += match.length();
         } else { // all regex match failed...
           string temp;
