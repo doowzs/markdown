@@ -19,23 +19,26 @@ DocumentParser::DocumentParser() {
 void DocumentParser::parse(char *text) {
   int pos = 0, len = strlen(text);
   while (pos < len) {
-    while (pos < len and isspace(text[pos]))
+    while (pos < len and iscntrl(text[pos])) {
       ++pos;
-    if (pos == len)
+    }
+    if (pos == len) {
       break;
-    int last = pos;
-    cerr << "Parsed at " << last << "." << endl;
-    for (auto &p : parsers) {
-      auto res = p->parse(text + pos);
-      if (res.first != nullptr) {
-        root->addChild(res.first);
-        pos += res.second;
+    } else {
+      bool flag = false;
+      for (auto &p : parsers) {
+        auto res = p->parse(text + pos);
+        if (res.first != nullptr) {
+          root->addChild(res.first);
+          pos += res.second;
+          flag = true;
+          break;
+        }
+      }
+      if (!flag) {
+        cerr << "Parse failed at pos " << pos << "." << endl;
         break;
       }
-    }
-    if (pos == last) {
-      cerr << "Parsing failed." << endl;
-      break;
     }
   }
 }

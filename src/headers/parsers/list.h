@@ -19,6 +19,7 @@ public:
   pair<DOM::Node *, size_t> parseList(char *text, size_t indent, bool ordered) {
     auto list = new DOM::Node(ordered ? DOM::OL : DOM::UL);
     cmatch match;
+    size_t symbol = 0;
     size_t length = 0;
     while (true) {
       while (*text != '\0' and iscntrl(*text)) {
@@ -26,37 +27,35 @@ public:
         ++length;
       }
       if (!regex_search(text, match, ordered ? olReg : ulReg)) {
-        if (!regex_search(text, match, ordered ? ulReg : olReg)) {
-          break;
+        if (regex_search(text, match, ordered ? ulReg : olReg) and
+            (symbol != 0 and match[1].length() == indent + symbol)) {
+          auto item = new DOM::Node(DOM::LI);
+          auto subList = parseList(text, match[1].length(), not ordered);
+          item->addChild(subList.first);
+          list->addChild(item);
+          text += subList.second;
+          length += subList.second;
         } else {
-          if (match[1].length() <= indent) {
-            break;
-          } else {
-            auto item = new DOM::Node(DOM::LI);
-            auto subList = parseList(text, match[1].length(), not ordered);
-            item->addChild(subList.first);
-            list->addChild(item);
-            text += subList.second;
-            length += subList.second;
-          }
+          break;
         }
       } else {
-        if (match[1].length() < indent) {
-          break;
-        } else if (match[1].length() == indent) {
+        if (match[1].length() == indent) {
           auto item = new DOM::Node(DOM::LI);
           auto content = new DOM::Node(match[3].str());
           item->addChild(content);
           list->addChild(item);
+          symbol = match[2].length();
           text += match.length();
           length += match.length();
-        } else {
+        } else if (symbol != 0 and match[1].length() == indent + symbol) {
           auto item = new DOM::Node(DOM::LI);
           auto subList = parseList(text, match[1].length(), ordered);
           item->addChild(subList.first);
           list->addChild(item);
           text += subList.second;
           length += subList.second;
+        } else {
+          break;
         }
       }
     }
