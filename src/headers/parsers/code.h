@@ -26,7 +26,7 @@ public:
       if (regex_search(text + length, reg)) {
         break;
       }
-      code += text[length];
+      code += DOM::escape(text[length]);
       ++length;
     }
     auto *hljs = new DOM::Node(DOM::CODE, map<string, string>{{"class", lang}}, code);

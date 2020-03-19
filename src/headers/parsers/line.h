@@ -31,7 +31,7 @@ public:
       while (pos < length) {
         if (s[pos] == '#' or s[pos] == '*' or s[pos] == '!' or
             s[pos] == '[' or s[pos] == '`') break;
-        content += s[pos];
+        content += DOM::escape(s[pos]);
         ++pos;
       }
       node->addChild(new DOM::Node(content));
@@ -82,7 +82,7 @@ public:
           pos += match.length();
         } else { // all regex match failed...
           string temp;
-          temp += s[pos];
+          temp += DOM::escape(s[pos]);
           node->addChild(new DOM::Node(temp));
           ++pos;
         }

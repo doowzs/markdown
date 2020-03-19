@@ -41,6 +41,16 @@ extern const string HTMLHeader;
 extern const string HTMLFooter;
 extern const map<enum Tags, string> TagStrings;
 
+inline string escape(char ch) {
+  if (ch == '<') {
+    return "&lt;";
+  } else if (ch == '>') {
+    return "&gt;";
+  } else {
+    return string(1, ch);
+  }
+}
+
 class Node {
 private:
   int indent{};
