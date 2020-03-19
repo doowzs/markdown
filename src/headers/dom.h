@@ -9,12 +9,18 @@
 
 namespace DOM {
 class Node {
-public:
+private:
+  bool raw;
   string tag;
+  string content;
   map<string, string> attrs;
-  Node *child, *next;
+  vector<Node *> children;
 
-  Node(string t, map<string, string> as);
+public:
+  explicit Node(string content);
+  Node(string tag, map<string, string> attrs);
+  void addChild(Node *child);
+  friend ostream &operator<<(ostream &os, Node &node);
 };
 }
 
