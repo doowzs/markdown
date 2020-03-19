@@ -9,7 +9,7 @@
 namespace Markdown {
 
 DocumentParser::DocumentParser() {
-  root = new DOM::Node("body", map<string, string>());
+  root = new DOM::Node(DOM::BODY, map<string, string>());
   parsers.emplace_back(new HeaderParser());
   parsers.emplace_back(new ParagraphParser());
 }

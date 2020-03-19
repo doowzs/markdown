@@ -7,21 +7,26 @@
 
 namespace DOM {
 
-Node::Node(string tag, map<string, string> attrs)
-    : raw(false), tag(move(tag)), attrs(move(attrs)) {
+Node::Node(string content) : content(move(content)) {
+  tag = RAW;
+  attrs = map<string, string>();
   children = vector<Node *>();
 }
 
-Node::Node(string content) : raw(true), content(move(content)) {
-  tag = string();
+Node::Node(enum Tags tag) : tag(tag) {
   attrs = map<string, string>();
+  children = vector<Node *>();
+}
+
+Node::Node(enum Tags tag, map<string, string> attrs)
+    : tag(tag), attrs(move(attrs)) {
   children = vector<Node *>();
 }
 
 void Node::addChild(Node *child) { children.emplace_back(child); }
 
 ostream &operator<<(ostream &os, Node &node) {
-  if (node.raw) {
+  if (node.tag == RAW) {
     os << node.content;
     for (auto &child : node.children) {
       os << *child;
