@@ -8,18 +8,15 @@
 #include "parsers/abstract.h"
 
 class InlineHeaderParser : public AbstractParser {
-private:
-  regex reg;
-
 public:
   InlineHeaderParser() = delete;
   explicit InlineHeaderParser(AbstractParser *master) {
     this->master = master;
-    reg = regex(R"(^\s*(#{1,6})\s?(.*))");
+    this->rule = regex(R"(^\s*(#{1,6})\s?(.*))");
   }
   size_t parseInline(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();
-    if (!regex_search(input, match, reg)) return 0;
+    if (!regex_search(input, match, rule)) return 0;
 
     auto header = new DOM::Node(
         (enum DOM::Tags)((int)DOM::H1 + match[1].length() - 1),

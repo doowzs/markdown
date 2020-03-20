@@ -8,18 +8,15 @@
 #include "parsers/abstract.h"
 
 class InlineHyperlinkParser : public AbstractParser {
-private:
-  regex reg;
-
 public:
   InlineHyperlinkParser() = delete;
   explicit InlineHyperlinkParser(AbstractParser *master) {
     this->master = master;
-    reg = regex(R"(^\[(.*)\]\((.*)\))");
+    this->rule = regex(R"(^\[(.*)\]\((.*)\))");
   }
   size_t parseInline(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();
-    if (!regex_search(input, match, reg)) return 0;
+    if (!regex_search(input, match, rule)) return 0;
 
     auto hyperlink = new DOM::Node(DOM::A, map<string, string> {
         {"href", match[2].str()}

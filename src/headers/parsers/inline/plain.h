@@ -8,18 +8,15 @@
 #include "parsers/abstract.h"
 
 class InlinePlainParser : public AbstractParser {
-private:
-  regex reg;
-
 public:
   InlinePlainParser() = delete;
   explicit InlinePlainParser(AbstractParser *master) {
     this->master = master;
-    reg = regex(R"(^[^#\*\!\[`]+)"); // avoid #, *, !, [, `
+    this->rule = regex(R"(^[^#\*\!\[`]+)"); // avoid #, *, !, [, `
   }
   size_t parseInline(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();
-    if (regex_search(input, match, reg)) {
+    if (regex_search(input, match, rule)) {
       parent->addChild(new DOM::Node(match.str()));
       return match.length();
     } else {
