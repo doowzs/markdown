@@ -12,6 +12,7 @@ private:
   regex reg;
 
 public:
+  CodeParser() = delete;
   explicit CodeParser(AbstractParser *master) {
     this->master = master;
     reg = regex(R"(^```(.*)\n?)");

@@ -12,16 +12,21 @@ private:
   regex reg;
 
 public:
-  InlineHeaderParser() {
+  InlineHeaderParser() = delete;
+  explicit InlineHeaderParser(AbstractParser *master) {
+    this->master = master;
     reg = regex(R"((#{1,6})\s?(.*))");
   }
-  pair<DOM::Node *, size_t> parse(char *text) {
-    cmatch match;
-    if (!regex_search(text, match, reg)) {
-      return make_pair(nullptr, 0);
-    }
-    return make_pair(nullptr, 0);
+  size_t parseInline(DOM::Node *parent, const char *input, const size_t size) override {
+    cmatch match = cmatch();
+    if (!regex_search(input, match, reg)) return 0;
 
+    auto header = new DOM::Node(
+        (enum DOM::Tags)((int)DOM::H1 + match[1].length() - 1),
+        map<string, string>{{"id", match[2].str()}});
+    master->parseInline(header, match[2].str().c_str(), match[2].length());
+    parent->addChild(header);
+    return match.length();
   }
 };
 

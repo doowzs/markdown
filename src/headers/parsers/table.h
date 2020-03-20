@@ -12,6 +12,7 @@ private:
   regex reg;
 
 public:
+  TableParser() = delete;
   explicit TableParser(AbstractParser *master) {
     this->master = master;
     reg = regex(R"(\|(.*)\|)"); // greedy regex

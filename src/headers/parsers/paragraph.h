@@ -12,6 +12,7 @@ private:
   regex reg;
 
 public:
+  ParagraphParser() = delete;
   explicit ParagraphParser(AbstractParser *master) {
     this->master = master;
     reg = regex(R"(^.*)");

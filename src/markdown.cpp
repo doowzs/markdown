@@ -10,6 +10,7 @@
 #include "parsers/paragraph.h"
 #include "parsers/table.h"
 #include "parsers/inline/header.h"
+#include "parsers/inline/plain.h"
 
 namespace Markdown {
 
@@ -20,6 +21,9 @@ DocumentParser::DocumentParser() {
   blockParsers.emplace_back(new CodeParser(this));
   blockParsers.emplace_back(new TableParser(this));
   blockParsers.emplace_back(new ParagraphParser(this));
+
+  inlineParsers.emplace_back(new InlineHeaderParser(this));
+  inlineParsers.emplace_back(new InlinePlainParser(this));
 }
 
 DocumentParser::~DocumentParser() {
@@ -53,7 +57,6 @@ size_t DocumentParser::parseBlock(DOM::Node *parent, const char *input, const si
 }
 
 size_t DocumentParser::parseInline(DOM::Node *parent, const char *input, const size_t size) {
-  return 1; /* FIXME */
   size_t pos = 0;
   while (pos < size) {
     while (pos < size and iscntrl(input[pos])) ++pos;
