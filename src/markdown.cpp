@@ -15,6 +15,7 @@
 #include "parsers/inline/image.h"
 #include "parsers/inline/italic.h"
 #include "parsers/inline/plain.h"
+#include "parsers/inline/strike.h"
 #include "parsers/inline/strong-italic.h"
 #include "parsers/inline/strong.h"
 
@@ -32,6 +33,7 @@ DocumentParser::DocumentParser() {
   inlineParsers.emplace_back(new InlineCodeParser(this));
   inlineParsers.emplace_back(new InlineImageParser(this));
   inlineParsers.emplace_back(new InlineHyperlinkParser(this));
+  inlineParsers.emplace_back(new InlineStrikeParser(this));
   inlineParsers.emplace_back(new InlineStrongItalicParser(this));
   inlineParsers.emplace_back(new InlineStrongParser(this));
   inlineParsers.emplace_back(new InlineItalicParser(this));

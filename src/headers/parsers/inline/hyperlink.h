@@ -18,7 +18,7 @@ public:
     cmatch match = cmatch();
     if (!regex_search(input, match, rule)) return 0;
 
-    auto hyperlink = new DOM::Node(DOM::A, map<string, string> {
+    auto hyperlink = new DOM::Node(DOM::ANCHOR, map<string, string> {
         {"href", match[2].str()}
     });
     master->parseInline(hyperlink, match[1].str().c_str(), match[1].length());
