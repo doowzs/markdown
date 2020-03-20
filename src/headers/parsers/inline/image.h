@@ -12,7 +12,7 @@ public:
   InlineImageParser() = delete;
   explicit InlineImageParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^\!\[(.*)\]\((.*)\))");
+    this->rule = regex(R"(^\!\[(.*)\]\((.*)\))", regex::optimize);
   }
   size_t parseInline(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();

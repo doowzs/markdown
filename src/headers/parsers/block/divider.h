@@ -12,7 +12,7 @@ public:
   BlockDividerParser() = delete;
   explicit BlockDividerParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^\s*\-{3,})");
+    this->rule = regex(R"(^\s*\-{3,})", regex::optimize);
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();

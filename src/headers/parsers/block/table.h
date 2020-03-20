@@ -12,7 +12,7 @@ public:
   BlockTableParser() = delete;
   explicit BlockTableParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^\|(.*)\|)"); // greedy regex
+    this->rule = regex(R"(^\|(.*)\|)", regex::optimize); // greedy regex
   }
   pair<DOM::Node *, size_t> parseTable(const char *text, const size_t size) {
     int row = 0, column = 0;
@@ -25,8 +25,8 @@ public:
       if (c != '|') --column;
     }
 
-    regex colReg = regex(R"((.*?)\|)"); // non-greedy regex
-    regex rowReg = regex(string(R"(((.*?)\|){)") + to_string(column) + string(R"(})"));
+    regex colReg = regex(R"((.*?)\|)", regex::optimize); // non-greedy regex
+    regex rowReg = regex(string(R"(((.*?)\|){)") + to_string(column) + string(R"(})"), regex::optimize);
 
     auto table = new DOM::Node(DOM::TABLE, map<string, string> {
         {"class", "table"},

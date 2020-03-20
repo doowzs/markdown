@@ -15,8 +15,8 @@ public:
   BlockListParser() = delete;
   explicit BlockListParser(AbstractParser *master) {
     this->master = master;
-    ulReg = regex(R"(^(\s*)([\+\-\*] )(.*))");
-    olReg = regex(R"(^(\s*)(\d+\. )(.*))");
+    ulReg = regex(R"(^(\s*)([\+\-\*] )(.*))", regex::optimize);
+    olReg = regex(R"(^(\s*)(\d+\. )(.*))", regex::optimize);
   }
   size_t parseList(DOM::Node *parent, const char *input, const size_t size, const size_t indent, const bool ordered) {
     auto list = new DOM::Node(ordered ? DOM::OL : DOM::UL);

@@ -12,7 +12,7 @@ public:
   BlockHeaderParser() = delete;
   explicit BlockHeaderParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^\s*(#{1,6})\s*(.*))");
+    this->rule = regex(R"(^\s*(#{1,6})\s*(.*))", regex::optimize);
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();

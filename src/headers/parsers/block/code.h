@@ -12,7 +12,7 @@ public:
   BlockCodeParser() = delete;
   explicit BlockCodeParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^\s*```(.*))");
+    this->rule = regex(R"(^\s*```(.*))", regex::optimize);
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match;

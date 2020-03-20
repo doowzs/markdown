@@ -12,7 +12,7 @@ public:
   InlinePlainParser() = delete;
   explicit InlinePlainParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^[^#\*\!\[`~]+)"); // avoid #, *, !, [, `, ~
+    this->rule = regex(R"(^[^#\*\!\[`~]+)", regex::optimize); // avoid #, *, !, [, `, ~
   }
   size_t parseInline(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();
