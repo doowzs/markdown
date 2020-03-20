@@ -8,18 +8,15 @@
 #include "parsers/abstract.h"
 
 class BlockDividerParser : public AbstractParser {
-private:
-  regex reg;
-
 public:
   BlockDividerParser() = delete;
   explicit BlockDividerParser(AbstractParser *master) {
     this->master = master;
-    reg = regex(R"(^\-{3,})");
+    this->rule = regex(R"(^\-{3,})");
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();
-    if (!regex_search(input, match, reg)) return 0;
+    if (!regex_search(input, match, rule)) return 0;
     parent->addChild(new DOM::Node(DOM::HR));
     return match.length();
   }

@@ -8,25 +8,22 @@
 #include "parsers/abstract.h"
 
 class BlockCodeParser : public AbstractParser {
-private:
-  regex reg;
-
 public:
   BlockCodeParser() = delete;
   explicit BlockCodeParser(AbstractParser *master) {
     this->master = master;
-    reg = regex(R"(^```(.*)\n?)");
+    this->rule = regex(R"(^```(.*)\n?)");
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match;
-    if (!regex_search(input, match, reg)) return 0;
+    if (!regex_search(input, match, rule)) return 0;
 
     string lang = match[1].str().empty() ? "plaintext" : match[1].str();
     auto *node = new DOM::Node(DOM::PRE, map<string, string>{{"lang", lang}});
     size_t length = match.length();
     string code;
     while (length < size) {
-      if (input[length] == '`' and regex_search(input + length, reg)) break;
+      if (input[length] == '`' and regex_search(input + length, rule)) break;
       code += DOM::escape(input[length]);
       ++length;
     }

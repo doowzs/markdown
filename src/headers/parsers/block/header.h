@@ -8,18 +8,15 @@
 #include "parsers/abstract.h"
 
 class BlockHeaderParser : public AbstractParser {
-private:
-  regex reg;
-
 public:
   BlockHeaderParser() = delete;
   explicit BlockHeaderParser(AbstractParser *master) {
     this->master = master;
-    reg = std::regex(R"(^\s*(#{1,6})\s?(.*))");
+    this->rule = std::regex(R"(^\s*(#{1,6})\s?(.*))");
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();
-    if (!regex_search(input, match, reg)) return 0;
+    if (!regex_search(input, match, rule)) return 0;
 
     auto header = new DOM::Node(
         (enum DOM::Tags)((int)DOM::H1 + match[1].length() - 1),

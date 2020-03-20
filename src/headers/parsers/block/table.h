@@ -8,21 +8,18 @@
 #include "parsers/abstract.h"
 
 class BlockTableParser : public AbstractParser {
-private:
-  regex reg;
-
 public:
   BlockTableParser() = delete;
   explicit BlockTableParser(AbstractParser *master) {
     this->master = master;
-    reg = regex(R"(^\|(.*)\|)"); // greedy regex
+    this->rule = regex(R"(^\|(.*)\|)"); // greedy regex
   }
   pair<DOM::Node *, size_t> parseTable(const char *text, const size_t size) {
     int row = 0, column = 0;
     size_t length = 1;
     cmatch match;
 
-    regex_search(text, match, reg);
+    regex_search(text, match, rule);
     column = match.length();
     for (auto &c : match.str()) {
       if (c != '|') --column;
@@ -76,7 +73,7 @@ public:
     return make_pair(table, length);
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
-    if (!regex_search(input, reg)) return 0;
+    if (!regex_search(input, rule)) return 0;
     auto res = parseTable(input, size);
     parent->addChild(res.first);
     return res.second;

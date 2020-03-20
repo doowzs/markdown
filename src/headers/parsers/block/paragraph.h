@@ -8,18 +8,15 @@
 #include "parsers/abstract.h"
 
 class BlockParagraphParser : public AbstractParser {
-private:
-  regex reg;
-
 public:
   BlockParagraphParser() = delete;
   explicit BlockParagraphParser(AbstractParser *master) {
     this->master = master;
-    reg = regex(R"(^.*)");
+    this->rule = regex(R"(^.*)");
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match = cmatch();
-    if (!regex_search(input, match, reg)) return 0;
+    if (!regex_search(input, match, rule)) return 0;
     auto *node = new DOM::Node(DOM::P);
     master->parseInline(node, match.str().c_str(), match.length());
     parent->addChild(node);
