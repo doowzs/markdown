@@ -21,7 +21,7 @@ public:
     cmatch match = cmatch();
     if (!regex_search(input, match, reg)) return 0;
     auto *node = new DOM::Node(DOM::P);
-    master->parseInline(node, match.str().c_str(), match.size());
+    master->parseInline(node, match.str().c_str(), match.length());
     parent->addChild(node);
     return match.length();
   }

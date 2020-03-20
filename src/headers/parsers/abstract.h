@@ -7,7 +7,6 @@
 
 #include "common.h"
 #include "dom.h"
-#include "parsers/line.h"
 
 class AbstractParser {
 protected:

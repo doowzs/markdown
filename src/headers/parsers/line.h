@@ -14,15 +14,14 @@ private:
 public:
   LineParser() {
     // use non-greedy regex to handle cases like "**A***B*"
-    headerReg = regex(R"((#{1,6})\s?(.*))");
     strongItalicReg = regex(R"(^\*\*\*(.+?)\*\*\*)");
     strongReg = regex(R"(^\*\*(.+?)\*\*)");
     italicReg = regex(R"(^\*(.+?)\*)");
     imageReg = regex(R"(^\!\[(.*)\]\((.*)\))");
-    linkReg = regex(R"(^\[(.*)\]\((.*)\))");
     codeReg = regex(R"(^`(.+?)`)");
   }
   void parse(DOM::Node *node, const string &s) {
+    static_assert(0); /* DO NOT COMPILE ME */
     cmatch match;
     size_t pos = 0, length = s.length();
     while (pos < length) {
@@ -38,12 +37,7 @@ public:
         break;
       } else {
         string substr = s.substr(pos);
-        if (regex_search(substr.c_str(), match, headerReg)) {
-          auto header = new DOM::Node((enum DOM::Tags)((int)DOM::H1 + match[1].length() - 1));
-          parse(header, match[2].str());
-          node->addChild(header);
-          pos += match.length();
-        } else if (regex_search(substr.c_str(), match, strongItalicReg)) {
+        if (regex_search(substr.c_str(), match, strongItalicReg)) {
           auto strong = new DOM::Node(DOM::STRONG);
           auto italic = new DOM::Node(DOM::ITALIC);
           parse(italic, match[1].str());
