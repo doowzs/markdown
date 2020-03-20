@@ -12,6 +12,7 @@
 #include "parsers/inline/header.h"
 #include "parsers/inline/plain.h"
 #include "parsers/inline/hyperlink.h"
+#include "parsers/inline/strong-italic.h"
 
 namespace Markdown {
 
@@ -25,6 +26,7 @@ DocumentParser::DocumentParser() {
 
   inlineParsers.emplace_back(new InlineHeaderParser(this));
   inlineParsers.emplace_back(new InlineHyperlinkParser(this));
+  inlineParsers.emplace_back(new InlineStrongItalicParser(this));
   inlineParsers.emplace_back(new InlinePlainParser(this));
 }
 

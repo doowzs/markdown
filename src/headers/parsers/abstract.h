@@ -10,6 +10,7 @@
 
 class AbstractParser {
 protected:
+  regex rule;
   AbstractParser *master{}; // IoC
 
 public:
