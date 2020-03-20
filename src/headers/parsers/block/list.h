@@ -2,18 +2,18 @@
 // Created by Tianyun Zhang on 2020/3/19.
 //
 
-#ifndef MARKDOWN_SRC_HEADERS_PARSERS_LIST_H_
-#define MARKDOWN_SRC_HEADERS_PARSERS_LIST_H_
+#ifndef MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_LIST_H_
+#define MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_LIST_H_
 
 #include "parsers/abstract.h"
 
-class ListParser : public AbstractParser {
+class BlockListParser : public AbstractParser {
 private:
   regex ulReg, olReg;
 
 public:
-  ListParser() = delete;
-  explicit ListParser(AbstractParser *master) {
+  BlockListParser() = delete;
+  explicit BlockListParser(AbstractParser *master) {
     this->master = master;
     ulReg = regex(R"(^(\s*)([\+\-\*] )(.*))");
     olReg = regex(R"(^(\s*)(\d+\. )(.*))");
@@ -73,4 +73,4 @@ public:
   }
 };
 
-#endif // MARKDOWN_SRC_HEADERS_PARSERS_LIST_H_
+#endif // MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_LIST_H_

@@ -2,18 +2,18 @@
 // Created by Tianyun Zhang on 2020/3/19.
 //
 
-#ifndef MARKDOWN_SRC_HEADERS_PARSERS_HEADER_H_
-#define MARKDOWN_SRC_HEADERS_PARSERS_HEADER_H_
+#ifndef MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_HEADER_H_
+#define MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_HEADER_H_
 
 #include "parsers/abstract.h"
 
-class HeaderParser : public AbstractParser {
+class BlockHeaderParser : public AbstractParser {
 private:
   regex reg;
 
 public:
-  HeaderParser() = delete;
-  explicit HeaderParser(AbstractParser *master) {
+  BlockHeaderParser() = delete;
+  explicit BlockHeaderParser(AbstractParser *master) {
     this->master = master;
     reg = std::regex(R"(^\s*(#{1,6})\s?(.*))");
   }
@@ -30,4 +30,4 @@ public:
   }
 };
 
-#endif // MARKDOWN_SRC_HEADERS_PARSERS_HEADER_H_
+#endif // MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_HEADER_H_

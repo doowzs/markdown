@@ -2,18 +2,18 @@
 // Created by Tianyun Zhang on 2020/3/19.
 //
 
-#ifndef MARKDOWN_SRC_HEADERS_PARSERS_CODE_H_
-#define MARKDOWN_SRC_HEADERS_PARSERS_CODE_H_
+#ifndef MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_CODE_H_
+#define MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_CODE_H_
 
 #include "parsers/abstract.h"
 
-class CodeParser : public AbstractParser {
+class BlockCodeParser : public AbstractParser {
 private:
   regex reg;
 
 public:
-  CodeParser() = delete;
-  explicit CodeParser(AbstractParser *master) {
+  BlockCodeParser() = delete;
+  explicit BlockCodeParser(AbstractParser *master) {
     this->master = master;
     reg = regex(R"(^```(.*)\n?)");
   }
@@ -39,4 +39,4 @@ public:
   }
 };
 
-#endif // MARKDOWN_SRC_HEADERS_PARSERS_CODE_H_
+#endif // MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_CODE_H_

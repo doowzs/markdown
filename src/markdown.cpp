@@ -3,30 +3,30 @@
 //
 
 #include "markdown.h"
-#include "parsers/code.h"
-#include "parsers/divider.h"
-#include "parsers/header.h"
-#include "parsers/list.h"
-#include "parsers/paragraph.h"
-#include "parsers/table.h"
+#include "parsers/block/code.h"
+#include "parsers/block/divider.h"
+#include "parsers/block/header.h"
+#include "parsers/block/list.h"
+#include "parsers/block/paragraph.h"
+#include "parsers/block/table.h"
+#include "parsers/inline/code.h"
 #include "parsers/inline/header.h"
-#include "parsers/inline/plain.h"
 #include "parsers/inline/hyperlink.h"
+#include "parsers/inline/image.h"
+#include "parsers/inline/italic.h"
+#include "parsers/inline/plain.h"
 #include "parsers/inline/strong-italic.h"
 #include "parsers/inline/strong.h"
-#include "parsers/inline/italic.h"
-#include "parsers/inline/image.h"
-#include "parsers/inline/code.h"
 
 namespace Markdown {
 
 DocumentParser::DocumentParser() {
-  blockParsers.emplace_back(new HeaderParser(this));
-  blockParsers.emplace_back(new DividerParser(this));
-  blockParsers.emplace_back(new ListParser(this));
-  blockParsers.emplace_back(new CodeParser(this));
-  blockParsers.emplace_back(new TableParser(this));
-  blockParsers.emplace_back(new ParagraphParser(this));
+  blockParsers.emplace_back(new BlockHeaderParser(this));
+  blockParsers.emplace_back(new BlockDividerParser(this));
+  blockParsers.emplace_back(new BlockListParser(this));
+  blockParsers.emplace_back(new BlockCodeParser(this));
+  blockParsers.emplace_back(new BlockTableParser(this));
+  blockParsers.emplace_back(new BlockParagraphParser(this));
 
   inlineParsers.emplace_back(new InlineHeaderParser(this));
   inlineParsers.emplace_back(new InlineCodeParser(this));

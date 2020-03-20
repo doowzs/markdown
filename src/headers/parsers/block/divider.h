@@ -2,18 +2,18 @@
 // Created by Tianyun Zhang on 2020/3/19.
 //
 
-#ifndef MARKDOWN_SRC_HEADERS_PARSERS_DIVIDER_H_
-#define MARKDOWN_SRC_HEADERS_PARSERS_DIVIDER_H_
+#ifndef MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_DIVIDER_H_
+#define MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_DIVIDER_H_
 
 #include "parsers/abstract.h"
 
-class DividerParser : public AbstractParser {
+class BlockDividerParser : public AbstractParser {
 private:
   regex reg;
 
 public:
-  DividerParser() = delete;
-  explicit DividerParser(AbstractParser *master) {
+  BlockDividerParser() = delete;
+  explicit BlockDividerParser(AbstractParser *master) {
     this->master = master;
     reg = regex(R"(^\-{3,})");
   }
@@ -25,4 +25,4 @@ public:
   }
 };
 
-#endif // MARKDOWN_SRC_HEADERS_PARSERS_DIVIDER_H_
+#endif // MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_DIVIDER_H_

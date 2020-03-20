@@ -2,18 +2,18 @@
 // Created by Tianyun Zhang on 2020/3/19.
 //
 
-#ifndef MARKDOWN_SRC_HEADERS_PARSERS_PARAGRAPH_H_
-#define MARKDOWN_SRC_HEADERS_PARSERS_PARAGRAPH_H_
+#ifndef MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_PARAGRAPH_H_
+#define MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_PARAGRAPH_H_
 
 #include "parsers/abstract.h"
 
-class ParagraphParser : public AbstractParser {
+class BlockParagraphParser : public AbstractParser {
 private:
   regex reg;
 
 public:
-  ParagraphParser() = delete;
-  explicit ParagraphParser(AbstractParser *master) {
+  BlockParagraphParser() = delete;
+  explicit BlockParagraphParser(AbstractParser *master) {
     this->master = master;
     reg = regex(R"(^.*)");
   }
@@ -27,4 +27,4 @@ public:
   }
 };
 
-#endif // MARKDOWN_SRC_HEADERS_PARSERS_PARAGRAPH_H_
+#endif // MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_PARAGRAPH_H_

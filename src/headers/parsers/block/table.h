@@ -2,18 +2,18 @@
 // Created by Tianyun Zhang on 2020/3/19.
 //
 
-#ifndef MARKDOWN_SRC_HEADERS_PARSERS_TABLE_H_
-#define MARKDOWN_SRC_HEADERS_PARSERS_TABLE_H_
+#ifndef MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_TABLE_H_
+#define MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_TABLE_H_
 
 #include "parsers/abstract.h"
 
-class TableParser : public AbstractParser {
+class BlockTableParser : public AbstractParser {
 private:
   regex reg;
 
 public:
-  TableParser() = delete;
-  explicit TableParser(AbstractParser *master) {
+  BlockTableParser() = delete;
+  explicit BlockTableParser(AbstractParser *master) {
     this->master = master;
     reg = regex(R"(\|(.*)\|)"); // greedy regex
   }
@@ -83,4 +83,4 @@ public:
   }
 };
 
-#endif // MARKDOWN_SRC_HEADERS_PARSERS_TABLE_H_
+#endif // MARKDOWN_SRC_HEADERS_PARSERS_BLOCK_TABLE_H_
