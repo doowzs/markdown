@@ -54,6 +54,8 @@ char *readFromConsole() {
   size_t length = 0;
   char *buffer = nullptr;
   string input = string();
+
+  cout << "No input file given, reading Markdown stream from console." << endl;
   while (!cin.read(&ch, 1).eof()) {
     input += ch;
     ++length;
