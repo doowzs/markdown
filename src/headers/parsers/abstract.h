@@ -17,6 +17,7 @@ protected:
   AbstractParser *master{}; // IoC
 
 public:
+  virtual ~AbstractParser() = default;
   virtual size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) {
     return 0;
   }

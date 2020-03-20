@@ -28,20 +28,20 @@ public:
       if (length >= size) break;
 
       if (regex_search(input + length, match, ordered ? olReg : ulReg)) {
-        if (match[1].length() == indent) {
+        if ((size_t)match[1].length() == indent) {
           auto item = new DOM::Node(DOM::LI);
           master->parseInline(item, match[3].str().c_str(), match[3].length());
           list->addChild(item);
           symbol = match[2].length();
           length += match.length();
-        } else if (symbol != 0 and match[1].length() == indent + symbol) {
+        } else if (symbol != 0 and (size_t)match[1].length() == indent + symbol) {
           length += parseList(list, input + length, size - length, indent + symbol, ordered);
         } else {
           break;
         }
       } else {
         if (regex_search(input + length, match, ordered ? ulReg : olReg) and
-            (symbol != 0 and match[1].length() == indent + symbol)) {
+            (symbol != 0 and (size_t)match[1].length() == indent + symbol)) {
           length += parseList(list, input + length, size - length, indent + symbol, not ordered);
         } else {
           break;

@@ -76,7 +76,7 @@ Node::Node(enum Tags tag, map<string, string> attrs)
 }
 
 Node::Node(enum Tags tag, map<string, string> attrs, string content)
-    : tag(tag), attrs(move(attrs)), content(move(content)) {
+    : tag(tag), content(move(content)), attrs(move(attrs)) {
   children = vector<Node *>();
 }
 
