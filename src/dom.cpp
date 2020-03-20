@@ -8,7 +8,7 @@
 namespace DOM {
 
 const string HTMLHeader = R"(<!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     <meta charset="utf-8">
     <title>Markdown HTML</title>

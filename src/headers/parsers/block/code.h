@@ -23,19 +23,17 @@ public:
 
     string lang = match[1].str().empty() ? "plaintext" : match[1].str();
     auto *node = new DOM::Node(DOM::PRE, map<string, string>{{"lang", lang}});
-    int length = match.length();
+    size_t length = match.length();
     string code;
-    while (input[length] != '\0') {
-      if (regex_search(input + length, reg)) {
-        break;
-      }
+    while (length < size) {
+      if (input[length] == '`' and regex_search(input + length, reg)) break;
       code += DOM::escape(input[length]);
       ++length;
     }
     auto *hljs = new DOM::Node(DOM::CODE, map<string, string>{{"class", lang}}, code);
     node->addChild(hljs);
     parent->addChild(node);
-    return length + 3;
+    return min(length + 3, size); // avoid overflow
   }
 };
 
