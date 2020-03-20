@@ -20,6 +20,7 @@ public:
     auto image = new DOM::Node(DOM::IMG, {
         {"alt", match[1].str()},
         {"src", match[2].str()},
+        {"style", "max-width:90%;"},
     });
     parent->addChild(image);
     return match.length();
