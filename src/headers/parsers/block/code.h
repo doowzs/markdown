@@ -12,7 +12,7 @@ public:
   BlockCodeParser() = delete;
   explicit BlockCodeParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^\s*```(.*)\n?)");
+    this->rule = regex(R"(^\s*```(.*))");
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match;
@@ -22,6 +22,7 @@ public:
     auto *node = new DOM::Node(DOM::PRE, map<string, string>{{"lang", lang}});
     size_t length = match.length();
     string code;
+    while (length < size and iscntrl(input[length])) ++length; // omit first newline
     while (length < size) {
       if (input[length] == '`' and regex_search(input + length, rule)) break;
       code += DOM::escape(input[length]);
