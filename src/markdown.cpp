@@ -23,8 +23,8 @@ namespace Markdown {
 DocumentParser::DocumentParser() {
   blockParsers.emplace_back(new BlockHeaderParser(this));
   blockParsers.emplace_back(new BlockDividerParser(this));
-  blockParsers.emplace_back(new BlockListParser(this));
   blockParsers.emplace_back(new BlockCodeParser(this));
+  blockParsers.emplace_back(new BlockListParser(this));
   blockParsers.emplace_back(new BlockTableParser(this));
   blockParsers.emplace_back(new BlockParagraphParser(this));
 

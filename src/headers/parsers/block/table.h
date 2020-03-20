@@ -15,7 +15,7 @@ public:
   BlockTableParser() = delete;
   explicit BlockTableParser(AbstractParser *master) {
     this->master = master;
-    reg = regex(R"(\|(.*)\|)"); // greedy regex
+    reg = regex(R"(^\|(.*)\|)"); // greedy regex
   }
   pair<DOM::Node *, size_t> parseTable(const char *text, const size_t size) {
     int row = 0, column = 0;
