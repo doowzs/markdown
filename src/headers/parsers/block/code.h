@@ -12,11 +12,9 @@ public:
   BlockCodeParser() = delete;
   explicit BlockCodeParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^```(.*)\n?)");
+    this->rule = regex(R"(^\s*```(.*)\n?)");
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
-    if (*input != '`') return 0;
-
     cmatch match;
     if (!regex_search(input, match, rule)) return 0;
 

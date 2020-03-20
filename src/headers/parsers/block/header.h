@@ -12,11 +12,9 @@ public:
   BlockHeaderParser() = delete;
   explicit BlockHeaderParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^(#{1,6})\s*(.*))");
+    this->rule = regex(R"(^\s*(#{1,6})\s*(.*))");
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
-    if (*input != '#') return 0;
-
     cmatch match = cmatch();
     if (!regex_search(input, match, rule)) return 0;
 
