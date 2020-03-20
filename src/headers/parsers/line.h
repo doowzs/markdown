@@ -17,8 +17,8 @@ public:
     strongItalicReg = regex();
     strongReg = regex();
     italicReg = regex();
-    imageReg = regex(R"(^\!\[(.*)\]\((.*)\))");
-    codeReg = regex(R"(^`(.+?)`)");
+    imageReg = regex();
+    codeReg = regex();
   }
   void parse(DOM::Node *node, const string &s) {
     static_assert(0); /* DO NOT COMPILE ME */
@@ -54,12 +54,6 @@ public:
           node->addChild(italic);
           pos += match.length();
         } else if (regex_search(substr.c_str(), match, imageReg)) {
-          auto image = new DOM::Node(DOM::IMG, {
-              {"alt", match[1].str()},
-              {"src", match[2].str()},
-          });
-          node->addChild(image);
-          pos += match.length();
         } else if (regex_search(substr.c_str(), match, linkReg)) {
           auto hyperlink = new DOM::Node(DOM::A, {
               {"href", match[2].str()},

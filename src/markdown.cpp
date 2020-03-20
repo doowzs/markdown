@@ -15,6 +15,8 @@
 #include "parsers/inline/strong-italic.h"
 #include "parsers/inline/strong.h"
 #include "parsers/inline/italic.h"
+#include "parsers/inline/image.h"
+#include "parsers/inline/code.h"
 
 namespace Markdown {
 
@@ -27,6 +29,8 @@ DocumentParser::DocumentParser() {
   blockParsers.emplace_back(new ParagraphParser(this));
 
   inlineParsers.emplace_back(new InlineHeaderParser(this));
+  inlineParsers.emplace_back(new InlineCodeParser(this));
+  inlineParsers.emplace_back(new InlineImageParser(this));
   inlineParsers.emplace_back(new InlineHyperlinkParser(this));
   inlineParsers.emplace_back(new InlineStrongItalicParser(this));
   inlineParsers.emplace_back(new InlineStrongParser(this));
