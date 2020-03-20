@@ -15,8 +15,8 @@ public:
   LineParser() {
     // use non-greedy regex to handle cases like "**A***B*"
     strongItalicReg = regex();
-    strongReg = regex(R"(^\*\*(.+?)\*\*)");
-    italicReg = regex(R"(^\*(.+?)\*)");
+    strongReg = regex();
+    italicReg = regex();
     imageReg = regex(R"(^\!\[(.*)\]\((.*)\))");
     codeReg = regex(R"(^`(.+?)`)");
   }
