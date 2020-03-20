@@ -12,26 +12,29 @@ private:
   regex reg;
 
 public:
-  CodeParser() { reg = regex(R"(^```(.*)\n?)"); }
-  pair<DOM::Node *, size_t> parse(char *text) override {
+  explicit CodeParser(AbstractParser *master) {
+    this->master = master;
+    reg = regex(R"(^```(.*)\n?)");
+  }
+  size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
     cmatch match;
-    if (!regex_search(text, match, reg)) {
-      return make_pair(nullptr, 0);
-    }
+    if (!regex_search(input, match, reg)) return 0;
+
     string lang = match[1].str().empty() ? "plaintext" : match[1].str();
     auto *node = new DOM::Node(DOM::PRE, map<string, string>{{"lang", lang}});
     int length = match.length();
     string code;
-    while (text[length] != '\0') {
-      if (regex_search(text + length, reg)) {
+    while (input[length] != '\0') {
+      if (regex_search(input + length, reg)) {
         break;
       }
-      code += DOM::escape(text[length]);
+      code += DOM::escape(input[length]);
       ++length;
     }
     auto *hljs = new DOM::Node(DOM::CODE, map<string, string>{{"class", lang}}, code);
     node->addChild(hljs);
-    return make_pair(node, length + 3);
+    parent->addChild(node);
+    return length + 3;
   }
 };
 

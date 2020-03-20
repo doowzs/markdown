@@ -12,15 +12,16 @@ private:
   regex reg;
 
 public:
-  DividerParser() {
+  DividerParser() = delete;
+  explicit DividerParser(AbstractParser *master) {
+    this->master = master;
     reg = regex(R"(^\-{3,})");
   }
-  pair<DOM::Node *, size_t> parse(char *text) override {
-    cmatch match;
-    if (!regex_search(text, match, reg)) {
-      return make_pair(nullptr, 0);
-    }
-    return make_pair(new DOM::Node(DOM::HR), match.length());
+  size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
+    cmatch match = cmatch();
+    if (!regex_search(input, match, reg)) return 0;
+    parent->addChild(new DOM::Node(DOM::HR));
+    return match.length();
   }
 };
 

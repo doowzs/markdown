@@ -10,14 +10,16 @@
 #include "parsers/abstract.h"
 
 namespace Markdown {
-class DocumentParser {
+class DocumentParser : public AbstractParser {
 public:
-  DOM::Node *root;
-  vector<AbstractParser *> parsers;
+  vector<AbstractParser *> blockParsers;
+  vector<AbstractParser *> inlineParsers;
 
   DocumentParser();
   ~DocumentParser();
-  void parse(char *text);
+  DOM::Node *parse(char *text);
+  size_t parseBlock(DOM::Node *parent, const char *input, size_t size) override;
+  size_t parseInline(DOM::Node *parent, const char *input, size_t size) override;
 };
 }
 

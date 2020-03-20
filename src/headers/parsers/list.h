@@ -12,11 +12,13 @@ private:
   regex ulReg, olReg;
 
 public:
-  ListParser() {
+  ListParser() = delete;
+  explicit ListParser(AbstractParser *master) {
+    this->master = master;
     ulReg = regex(R"(^(\s*)([\+\-\*] )(.*))");
     olReg = regex(R"(^(\s*)(\d+\. )(.*))");
   }
-  pair<DOM::Node *, size_t> parseList(char *text, size_t indent, bool ordered) {
+  pair<DOM::Node *, size_t> parseList(DOM::Node *parent, const char *text, const size_t size, const size_t indent, const bool ordered) {
     auto list = new DOM::Node(ordered ? DOM::OL : DOM::UL);
     cmatch match;
     size_t symbol = 0;
@@ -29,7 +31,7 @@ public:
       if (!regex_search(text, match, ordered ? olReg : ulReg)) {
         if (regex_search(text, match, ordered ? ulReg : olReg) and
             (symbol != 0 and match[1].length() == indent + symbol)) {
-          auto subList = parseList(text, match[1].length(), not ordered);
+          auto subList = parseList(list, text, match[1].length(), indent + 1, !ordered);
           list->addChild(subList.first);
           text += subList.second;
           length += subList.second;
@@ -39,13 +41,13 @@ public:
       } else {
         if (match[1].length() == indent) {
           auto item = new DOM::Node(DOM::LI);
-          lineParser.parse(item, match[3].str());
+          master->parseInline(item, match[3].str().c_str(), match[3].length());
           list->addChild(item);
           symbol = match[2].length();
           text += match.length();
           length += match.length();
         } else if (symbol != 0 and match[1].length() == indent + symbol) {
-          auto subList = parseList(text, match[1].length(), ordered);
+          auto subList = parseList(list, text, match[1].length(), indent + 1, ordered);
           list->addChild(subList.first);
           text += subList.second;
           length += subList.second;
@@ -56,13 +58,17 @@ public:
     }
     return make_pair(list, length);
   }
-  pair<DOM::Node *, size_t> parse(char *text) override {
-    if (regex_search(text, ulReg)) {
-      return parseList(text, 0, false);
-    } else if (regex_search(text, olReg)) {
-      return parseList(text, 0, true);
+  size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
+    if (regex_search(input, ulReg)) {
+      auto res = parseList(parent, input, size, 0, false);
+      parent->addChild(res.first);
+      return res.second;
+    } else if (regex_search(input, olReg)) {
+      auto res = parseList(parent, input, size, 0, true);
+      parent->addChild(res.first);
+      return res.second;
     } else {
-      return make_pair(nullptr, 0);
+      return 0;
     }
   }
 };

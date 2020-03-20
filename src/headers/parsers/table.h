@@ -12,10 +12,11 @@ private:
   regex reg;
 
 public:
-  TableParser() {
+  explicit TableParser(AbstractParser *master) {
+    this->master = master;
     reg = regex(R"(\|(.*)\|)"); // greedy regex
   }
-  pair<DOM::Node *, size_t> parseTable(char *text) {
+  pair<DOM::Node *, size_t> parseTable(const char *text, const size_t size) {
     int row = 0, column = 0;
     size_t length = 1;
     cmatch match;
@@ -39,7 +40,7 @@ public:
       auto theadCell = new DOM::Node(DOM::TH, map<string, string> {
           {"scope", "col"},
       });
-      lineParser.parse(theadCell, match[1].str());
+      master->parseInline(theadCell, match[1].str().c_str(), match[1].length());
       theadRow->addChild(theadCell);
       length += match.length();
     }
@@ -57,7 +58,7 @@ public:
       for (int i = 0; i < column; ++i) {
         regex_search(text + length, match, colReg);
         auto trowCell = new DOM::Node(DOM::TD);
-        lineParser.parse(trowCell, match[1].str());
+        master->parseInline(trowCell, match[1].str().c_str(), match[1].length());
         trow->addChild(trowCell);
         length += match.length();
       }
@@ -73,11 +74,11 @@ public:
 
     return make_pair(table, length);
   }
-  pair<DOM::Node *, size_t> parse(char *text) override {
-    if (!regex_search(text, reg)) {
-      return make_pair(nullptr, 0);
-    }
-    return parseTable(text);
+  size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
+    if (!regex_search(input, reg)) return 0;
+    auto res = parseTable(input, size);
+    parent->addChild(res.first);
+    return res.second;
   }
 };
 

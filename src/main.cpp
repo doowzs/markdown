@@ -89,6 +89,8 @@ char *readFromFile(string &filename) {
 
 void parseMarkdown(ostream &os, char *buffer) {
   auto *parser = new Markdown::DocumentParser;
-  parser->parse(buffer);
-  os << DOM::HTMLHeader << *parser->root << DOM::HTMLFooter;
+  auto *root = parser->parse(buffer);
+  os << DOM::HTMLHeader << *root << DOM::HTMLFooter;
+  delete root;
+  delete parser;
 }

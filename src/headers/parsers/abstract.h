@@ -10,10 +10,15 @@
 #include "parsers/line.h"
 
 class AbstractParser {
+protected:
+  AbstractParser *master{}; // IoC
+
 public:
-  static LineParser lineParser;
-  virtual pair<DOM::Node *, size_t> parse(char *text) {
-    return make_pair(nullptr, 0);
+  virtual size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) {
+    return 0;
+  }
+  virtual size_t parseInline(DOM::Node *parent, const char *input, const size_t size) {
+    return 0;
   }
 };
 

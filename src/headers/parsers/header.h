@@ -12,17 +12,20 @@ private:
   regex reg;
 
 public:
-  HeaderParser() { reg = std::regex(R"(^\s*(#{1,6})(.*))"); }
-  pair<DOM::Node *, size_t> parse(char *text) override {
-    cmatch match;
-    if (!regex_search(text, match, reg)) {
-      return make_pair(nullptr, 0);
-    }
+  HeaderParser() = delete;
+  explicit HeaderParser(AbstractParser *master) {
+    this->master = master;
+    reg = std::regex(R"(^\s*(#{1,6})(.*))");
+  }
+  size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
+    cmatch match = cmatch();
+    if (!regex_search(input, match, reg)) return 0;
+
     auto header = new DOM::Node(
         (enum DOM::Tags)((int)DOM::H1 + match[1].length() - 1),
-            map<string, string>{{"id", match[2].str()}});
-    lineParser.parse(header, match[2].str());
-    return make_pair(header, match.str().size());
+        map<string, string>{{"id", match[2].str()}});
+    master->parseInline(header, match[2].str().c_str(), match[2].length());
+    return match.length();
   }
 };
 
