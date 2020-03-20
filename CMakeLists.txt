@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.13)
 project(markdown)
 
 file(GLOB CMAKE_CXX_SOURCES src/*.cpp)
