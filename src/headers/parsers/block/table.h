@@ -73,7 +73,9 @@ public:
     return make_pair(table, length);
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
+    if (*input != '|') return 0;
     if (!regex_search(input, rule)) return 0;
+
     auto res = parseTable(input, size);
     parent->addChild(res.first);
     return res.second;

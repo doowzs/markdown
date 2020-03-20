@@ -12,15 +12,19 @@ public:
   BlockParagraphParser() = delete;
   explicit BlockParagraphParser(AbstractParser *master) {
     this->master = master;
-    this->rule = regex(R"(^.*)");
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
-    cmatch match = cmatch();
-    if (!regex_search(input, match, rule)) return 0;
-    auto *node = new DOM::Node(DOM::P);
-    master->parseInline(node, match.str().c_str(), match.length());
-    parent->addChild(node);
-    return match.length();
+    size_t length = 0;
+    string content = string();
+    while (*input != '\n') {
+      content += *input;
+      ++input;
+      ++length;
+    }
+    auto *paragraph = new DOM::Node(DOM::P);
+    master->parseInline(paragraph, content.c_str(), length);
+    parent->addChild(paragraph);
+    return length;
   }
 };
 

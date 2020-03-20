@@ -52,6 +52,7 @@ public:
     return length;
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
+    if (not (*input == '-' or *input == '+' or *input == '*' or isdigit(*input))) return 0;
     if (regex_search(input, ulReg)) {
       return parseList(parent, input, size, 0, false);
     } else if (regex_search(input, olReg)) {

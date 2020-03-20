@@ -15,8 +15,11 @@ public:
     this->rule = regex(R"(^\-{3,})");
   }
   size_t parseBlock(DOM::Node *parent, const char *input, const size_t size) override {
+    if (*input != '-') return 0;
+
     cmatch match = cmatch();
     if (!regex_search(input, match, rule)) return 0;
+
     parent->addChild(new DOM::Node(DOM::HR));
     return match.length();
   }

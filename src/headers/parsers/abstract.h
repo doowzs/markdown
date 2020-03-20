@@ -6,7 +6,10 @@
 #define MARKDOWN_SRC_HEADERS_ABSTRACT_PARSER_H_
 
 #include "common.h"
+#include "regex.h"
 #include "dom.h"
+
+#define regex_search regex_search_line
 
 class AbstractParser {
 protected:
